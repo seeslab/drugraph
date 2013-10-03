@@ -1,0 +1,169 @@
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+DRUGraph README
+
+Last changed: 2013/09/30
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+This package includes the source code for the network algorithm for
+the identification of drug-drug interactions (REF).
+
+For the code to compile, you will NEED TO INSTALL, first:
+
+1) The GNU Scientific Libraries (GSL), available from
+http://www.gnu.org/software/gsl/
+
+
+----------------------------------------------------------------------
+INSTALLATION
+----------------------------------------------------------------------
+
+---- Unix ----
+
+In a Unix-like system (including MacOS), you can install the DRUGraph
+software by uncompressing the tarball (tar -xzvf
+drugraph-version.tar.gz) and running the usual stuff from the
+drugraph-version directory:
+
+cd drugraph-version
+
+./configure
+
+./make
+
+./make install
+
+This will install the software in your/default/bin/directory. To
+install in a different directory run
+
+./configure --prefix=path_to_install_directory
+
+instead of just "./configure". For other configure options run:
+
+./configure -h
+
+
+You can uninstall the whole thing by running
+
+./make uninstall
+
+from the installation directory.
+
+
+---- Windows (MinGW) ----
+
+
+1) First of all, you have to download and install MinGW
+(http://sourceforce.net/projects/mingw/files/latest/download?source=files)
+
+During the installation, when it prompts you which packages to
+install, select gcc, msys and mingw base. The other default options
+are OK.
+
+
+2) Download GNU Scientific Libraries (GSL), available from
+http://www.gnu.org/software/gsl/. In my installation, I've used
+version 1.15.
+
+
+3) Launch MinGW console (Programs -> MinGW -> MinGW Shell or
+C:\MinGW\msys\1.0\msys).
+
+
+4) Unzip the contents of the GSL downloaded file under your msys home
+which is at C:\MinGW\msys\1.0\home\user\ (it's important to perform
+step 3 or you won't have the home directory).
+
+
+5) In your msys console, cd into the gsl-15 folder and type the following:
+
+./configure --prefix=/MinGW
+
+make
+
+make install
+
+All these steps may take a while.
+
+
+6) Untar the contents of rgraph under your msys home and type the following:
+
+./configure 
+
+make
+
+[make install]
+
+
+----------------------------------------------------------------------
+USING DRUGraph
+----------------------------------------------------------------------
+
+The program takes as input a file containing a list of drug-drug
+interactions with the following format:
+
+d1 d2 0
+d1 d3 1
+d1 d4 1
+...
+
+This corresponds to a situation in which drug 1 (d1) and drug 2 (d2)
+have an interaction of type 0, d1 and d3 have an interaction of type
+1, and so on. Interaction types must be integer between 0 and K-1,
+where K is the number of interaction types.
+
+The program outputs a file predictions.dat with the following format:
+
+d2 d3 0.50 0.20 0.30
+d2 d4 0.15 0.55 0.30
+...
+
+This corresponds to a situation with three types of interactions
+(K=3), and indicates that: drugs 2 and 3 have an interaction of type 0
+with probability 0.50, of type 1 with probability 0.20, and of type 2
+with probability 0.30; drugs 2 and 4 have an interaction of type 0
+with probability 0.15, of type 1 with probability 0.55, and of type 2
+with probability 0.30; and so on.
+
+To see how everything works with a practical example, you can change
+to the directory main/ in the installation directory and run drugraph
+on the test network ddi_cokol_TRAIN.dat.
+
+Command line parameters
+----------------------------------------------------------------------
+
+To run the program, type the following in the command line:
+
+drugraph K net_file niterations seed
+
+where:
+
+* K is the number of types of interactions (for example, if
+  interactions can be antagonistic, additive or synergistic, then
+  K=3).
+
+* net_file is the file containing the known interactions, and has the
+  format described above.
+
+* niterations is the number of sampling iterations carried out by the
+  Metropolis algorithm.
+
+* seed is the seed for the random number generator, and can be any
+  positive integer.
+
+
+Running output
+----------------------------------------------------------------------
+
+After starting the program, the algorithm proceeds by: (i) determining
+a convenient thinning step; (ii) thermalizing the sampler; (iii)
+sampling. Please, be aware that each of these processes can take a
+long time (even days) in networks larger than a few hundreds of drugs.
+
+----------------------------------------------------------------------
+CONTACT
+----------------------------------------------------------------------
+
+sees.lab@gmail.com
