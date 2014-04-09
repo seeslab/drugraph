@@ -680,7 +680,7 @@ BlockModel(struct group *part, char type_sw, int list_sw)
     }
   }
 
-  return;
+  return 0;
 }
 
 /*
